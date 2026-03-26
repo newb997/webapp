@@ -14,17 +14,17 @@ pipeline {
     }
     stage('Build') {
       steps {
-        sh '<MAVEN_BUILD_COMMAND>'
+        sh 'mvn clean package -DskipTests'
       }
     }
     stage('Test') {
       steps {
-        sh '<MAVEN_TEST_COMMAND>'
+        sh 'mvn test'
       }
     }
     stage('Deploy') {
       steps {
-        deploy adapters: [tomcat9(credentialsId: 'admin', url: 'http://192.168.56.102:8080/')], contextPath: null, war: 'path/to/war'
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-manager', url: 'http://192.168.56.102:8080/')], contextPath: null, war: 'target/hello-world.war'
       }
     }
   }
